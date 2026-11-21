@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acesso ao Painel - Agendamentos</title>
+    <link rel="stylesheet" href="{% static 'agendamentos/css/style.css' %}">
+</head>
+<body>
+
+    <div class="login-wrapper">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="login-icon">
+                    <svg width="28" height="28" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                </div>
+                <h1>Área do Parceiro</h1>
+                <p>Entre para gerenciar sua agenda e horários</p>
+            </div>
+
+            <form method="post">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="id_username">Usuário</label>
+                    <input type="text" name="username" id="id_username" required autofocus placeholder="Digite seu usuário">
+                </div>
+
+                <div class="form-group">
+                    <label for="id_password">Senha</label>
+                    <input type="password" name="password" id="id_password" required placeholder="••••••••">
+                </div>
+
+                {% if form.errors %}
+                <div class="alert-error">
+                Usuário ou senha incorretos. Tente novamente.
+                </div>
+                {% endif %}
+
+                <button type="submit" class="btn-primary">Entrar no Painel</button>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

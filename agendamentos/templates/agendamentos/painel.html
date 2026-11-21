@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Administrativo</title>
+    <script src="https://tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 min-h-screen">
+    <nav class="bg-white shadow-sm px-4 py-4 flex justify-between items-center">
+        <span class="font-bold text-lg text-indigo-600">Minha Agenda</span>
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="text-sm text-red-600 font-medium hover:underline">Sair</button>
+        </form>
+    </nav>
+
+    <main class="max-w-4xl mx-auto p-4 mt-6">
+        <div class="bg-white p-6 rounded-2xl shadow-sm">
+            <h2 class="text-xl font-bold text-slate-800">Olá, {{ request.user.username }}!</h2>
+            <p class="text-slate-600 mt-1">Login realizado com sucesso. Aqui construiremos sua agenda e cadastros.</p>
+        </div>
+    </main>
+</body>
+</html>

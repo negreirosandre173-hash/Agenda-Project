@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profissionais</title>
+    <link rel="stylesheet" href="{% static 'agendamentos/css/style.css' %}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <span class="brand">Minha Agenda</span>
+        <div class="nav-links">
+            <a href="{% url 'gerenciar_horarios' %}">Horários</a>
+            <a href="{% url 'gerenciar_servicos' %}">Serviços</a>
+            <a href="{% url 'gerenciar_profissionais' %}" class="active">Profissionais</a>
+            <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn-link-danger">Sair</button>
+            </form>
+        </div>
+    </nav>
+
+    <main class="container">
+        <section class="card">
+            <h2 class="card-title">Novo Profissional</h2>
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label>Nome do Profissional</label>
+                    {{ form.nome }}
+                </div>
+                <div class="form-group">
+                    <label>WhatsApp do Profissional (Opcional)</label>
+                    {{ form.telefone }}
+                </div>
+                <div class="form-group">
+                    <label>Serviços que realiza:</label>
+                    <div class="checkbox-grid">
+                        {{ form.servicos }}
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary">+ Cadastrar Profissional</button>
+            </form>
+        </section>
+
+        <section class="card" style="margin-top: 20px;">
+            <h2 class="card-title">Equipe Cadastrada ({{ profissionais.count }})</h2>
+            
+            {% if profissionais %}
+                <ul class="item-list">
+                    {% for p in profissionais %}
+                    <li class="item-row">
+                        <div>
+                            <strong>{{ p.nome }}</strong>
+                            <span class="item-meta">
+                                {% for s in p.servicos.all %}{{ s.nome }}{% if not forloop.last %}, {% endif %}{% empty %}Sem serviços vinculados{% endfor %}
+                            </span>
+                        </div>
+                        <a href="{% url 'desativar_profissional' p.id %}" class="btn-remove" onclick="return confirm('Remover este profissional?')">Remover</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="empty-text">Nenhum profissional cadastrado ainda.</p>
+            {% endif %}
+        </section>
+    </main>
+
+</body>
+</html>

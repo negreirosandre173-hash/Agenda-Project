@@ -1,0 +1,70 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meus Serviços</title>
+    <link rel="stylesheet" href="{% static 'agendamentos/css/style.css' %}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <span class="brand">Minha Agenda</span>
+        <div class="nav-links">
+            <a href="{% url 'gerenciar_horarios' %}">Horários</a>
+            <a href="{% url 'gerenciar_servicos' %}" class="active">Serviços</a>
+            <a href="{% url 'gerenciar_profissionais' %}">Profissionais</a>
+            <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn-link-danger">Sair</button>
+            </form>
+        </div>
+    </nav>
+
+    <main class="container">
+        <section class="card">
+            <h2 class="card-title">Novo Serviço</h2>
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label>Nome do Serviço</label>
+                    {{ form.nome }}
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Preço (R$)</label>
+                        {{ form.preco }}
+                    </div>
+                    <div class="form-group">
+                        <label>Duração (min)</label>
+                        {{ form.duracao_minutos }}
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary">+ Adicionar Serviço</button>
+            </form>
+        </section>
+
+        <section class="card" style="margin-top: 20px;">
+            <h2 class="card-title">Serviços Cadastrados ({{ servicos.count }})</h2>
+            
+            {% if servicos %}
+                <ul class="item-list">
+                    {% for s in servicos %}
+                    <li class="item-row">
+                        <div>
+                            <strong>{{ s.nome }}</strong>
+                            <span class="item-meta">R$ {{ s.preco }} • {{ s.duracao_minutos }} min</span>
+                        </div>
+                        <a href="{% url 'desativar_servico' s.id %}" class="btn-remove" onclick="return confirm('Remover este serviço?')">Remover</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="empty-text">Nenhum serviço cadastrado ainda.</p>
+            {% endif %}
+        </section>
+    </main>
+
+</body>
+</html>
